@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>دعوة زفاف | محمود & يمنى</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&family=Alex+Brush&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --burgundy: #541524;
+      --burgundy-light: #7a2238;
+      --gold: #c5a059;
+      --gold-light: #f3dfaa;
+      --pink-soft: #fdebee;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: linear-gradient(145deg, #fdf5f6 0%, #fbebf0 50%, #f7dbe2 100%);
+      font-family: 'Cairo', sans-serif;
+      color: #381f25;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 12px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* بتلات الورد المتساقطة */
+    .petals-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      pointer-events: none !important;
+      z-index: 99999 !important;
+    }
+
+    .petal {
+      position: absolute;
+      top: -35px;
+      border-radius: 150% 0 150% 0;
+      background: linear-gradient(135deg, #ffc2cd 0%, #f48b9f 50%, #d14966 100%);
+      box-shadow: 0 3px 8px rgba(184, 51, 80, 0.25);
+      animation: fallPetal linear infinite;
+      opacity: 0.9;
+    }
+
+    @keyframes fallPetal {
+      0% {
+        transform: translateY(0) rotate(0deg) rotateY(0deg);
+        opacity: 0.95;
+      }
+      50% {
+        transform: translateY(50vh) translateX(35px) rotate(180deg) rotateY(180deg);
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(105vh) translateX(-35px) rotate(360deg) rotateY(360deg);
+        opacity: 0.2;
+      }
+    }
+
+    .p1  { left: 5%;  width: 18px; height: 13px; animation-duration: 5.5s; animation-delay: 0s; }
+    .p2  { left: 18%; width: 22px; height: 16px; animation-duration: 7s;   animation-delay: 1.2s; }
+    .p3  { left: 32%; width: 16px; height: 12px; animation-duration: 6s;   animation-delay: 2.5s; }
+    .p4  { left: 48%; width: 20px; height: 15px; animation-duration: 8s;   animation-delay: 0.5s; }
+    .p5  { left: 62%; width: 24px; height: 18px; animation-duration: 6.5s; animation-delay: 3s; }
+    .p6  { left: 78%; width: 17px; height: 13px; animation-duration: 7.5s; animation-delay: 1.8s; }
+    .p7  { left: 90%; width: 21px; height: 15px; animation-duration: 5.8s; animation-delay: 0.2s; }
+
+    #envelope-toggle {
+      position: fixed;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .envelope-screen {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 360px;
+      cursor: pointer;
+      transition: all 0.5s ease;
+    }
+
+    .tap-hint {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--burgundy);
+      margin-bottom: 22px;
+      animation: bounce 1.6s infinite;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .envelope-box {
+      position: relative;
+      width: 300px;
+      height: 205px;
+      background: #f4bac5;
+      border-radius: 14px;
+      box-shadow: 0 16px 36px rgba(84, 21, 36, 0.16);
+      perspective: 1000px;
+    }
+
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 150px solid transparent;
+      border-right: 150px solid transparent;
+      border-top: 112px solid #e9a3b1;
+      transform-origin: top;
+      z-index: 4;
+    }
+
+    .envelope-pocket {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 150px solid #f9d5dc;
+      border-right: 150px solid #f9d5dc;
+      border-bottom: 108px solid #eaa2b0;
+      border-radius: 0 0 14px 14px;
+      z-index: 3;
+    }
+
+    .envelope-card-peek {
+      position: absolute;
+      top: 25px;
+      left: 20px;
+      width: 260px;
+      height: 145px;
+      background: var(--white);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed var(--gold);
+      z-index: 2;
+    }
+
+    .seal-circle {
+      position: absolute;
+      top: 84px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 52px;
+      height: 52px;
+      background: radial-gradient(circle, #93223b, var(--burgundy));
+      border: 2px solid var(--gold-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+      font-size: 1.15rem;
+      font-weight: bold;
+      z-index: 5;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+      font-family: 'Alex Brush', cursive;
+    }
+
+    #envelope-toggle:checked ~ .envelope-screen {
+      opacity: 0;
+      transform: scale(0.85);
+      display: none;
+    }
+
+    #envelope-toggle:checked ~ .invitation-card {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+      animation: fadeInCard 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeInCard {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .invitation-card {
+      display: none;
+      opacity: 0;
+      width: 100%;
+      max-width: 520px;
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 35px 18px;
+      box-shadow: 0 22px 55px rgba(84, 21, 36, 0.12);
+      border: 1px solid rgba(197, 160, 89, 0.45);
+      position: relative;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .inner-gold-border {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border: 1px solid rgba(197, 160, 89, 0.35);
+      border-radius: 20px;
+      pointer-events: none;
+    }
+
+    .bismillah {
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .intro-text {
+      font-size: 1.05rem;
+      color: var(--burgundy-light);
+      margin-bottom: 16px;
+      line-height: 1.7;
+      font-weight: 600;
+    }
+
+    .royal-monogram {
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      background: radial-gradient(circle, #fffafc, #faedf0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 8px 24px rgba(197, 160, 89, 0.22);
+    }
+
+    .monogram-ring {
+      position: absolute;
+      width: 146px;
+      height: 146px;
+      border: 1px dashed #e598a7;
+      border-radius: 50%;
+      animation: rotateRing 25s linear infinite;
+    }
+
+    @keyframes rotateRing {
+      100% { transform: rotate(360deg); }
+    }
+
+    .monogram-text {
+      font-family: 'Alex Brush', cursive;
+      font-size: 3rem;
+      color: var(--burgundy);
+      line-height: 1;
+    }
+
+    .monogram-arabic-sub {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-top: 2px;
+    }
+
+    .names-block {
+      margin: 12px 0 16px;
+    }
+
+    .english-names {
+      font-family: 'Alex Brush', cursive;
+      font-size: 3.2rem;
+      color: var(--burgundy);
+      line-height: 1.2;
+    }
+
+    .arabic-names {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--burgundy-light);
+      margin-top: 2px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 16px auto;
+      width: 70%;
+      color: var(--gold);
+    }
+
+    .divider::before, .divider::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    /* ⏰ تصميم العداد التنازلي فائق الوضوح المقاوم للحجب ⏰ */
+    .countdown-wrap {
+      background: #541524 !important; /* عنابي داكن مصمت */
+      border-radius: 18px;
+      padding: 16px 10px;
+      margin: 20px 0;
+      box-shadow: 0 10px 24px rgba(84, 21, 36, 0.25);
+    }
+
+    .countdown-title {
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      color: #f3dfaa !important;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .countdown-boxes {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 8px !important;
+      direction: ltr !important;
+    }
+
+    .c-box {
+      background: #6a1c2f !important;
+      border: 1.5px solid #c5a059 !important;
+      border-radius: 12px;
+      padding: 8px 6px;
+      min-width: 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .c-val {
+      font-size: 1.75rem !important;
+      font-weight: 900 !important;
+      color: #ffffff !important; /* أبيض ناصع معزول */
+      line-height: 1.1;
+      display: block !important;
+    }
+
+    .c-lbl {
+      font-size: 0.75rem !important;
+      color: #fdebee !important;
+      margin-top: 3px;
+      font-weight: 700;
+      display: block !important;
+    }
+
+    .event-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .e-card {
+      background: #ffffff;
+      border: 1.5px solid #f9d5dc;
+      border-radius: 18px;
+      padding: 16px 10px;
+      box-shadow: 0 4px 15px rgba(84, 21, 36, 0.05);
+    }
+
+    .venue-card-highlight {
+      border: 1.5px solid var(--gold) !important;
+      background: #fffdfa;
+    }
+
+    .e-badge {
+      background: var(--pink-soft);
+      color: var(--burgundy);
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .e-heading {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--burgundy);
+    }
+
+    .e-desc-bold {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--burgundy-light);
+      margin-top: 4px;
+    }
+
+    .e-desc-sub {
+      font-size: 0.82rem;
+      color: #666;
+      margin-top: 3px;
+    }
+
+    .location-btn-wrapper {
+      margin-top: 12px;
+    }
+
+    .location-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      width: 100%;
+      background: linear-gradient(135deg, var(--burgundy-light), var(--burgundy));
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 15px 16px;
+      border-radius: 25px;
+      box-shadow: 0 8px 22px rgba(84, 21, 36, 0.28);
+      border: 1.5px solid var(--gold);
+    }
+
+    .btn-main-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+    }
+
+    .btn-sub-title {
+      font-size: 0.8rem;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    .footer-quote {
+      font-size: 1.15rem;
+      color: var(--burgundy-light);
+      margin-top: 22px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 420px) {
+      .event-cards { grid-template-columns: 1fr; }
+      .english-names { font-size: 2.8rem; }
+      .c-box { min-width: 58px; padding: 6px 4px; }
+      .c-val { font-size: 1.55rem !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- بتلات الورد -->
+  <div class="petals-container">
+    <div class="petal p1"></div>
+    <div class="petal p2"></div>
+    <div class="petal p3"></div>
+    <div class="petal p4"></div>
+    <div class="petal p5"></div>
+    <div class="petal p6"></div>
+    <div class="petal p7"></div>
+  </div>
+
+  <input type="checkbox" id="envelope-toggle">
+
+  <!-- واجهة المظروف -->
+  <label for="envelope-toggle" class="envelope-screen">
+    <div class="tap-hint">
+      <span>🌹</span> اضغط هنا لفتح بطاقة الدعوة <span>🌹</span>
+    </div>
+
+    <div class="envelope-box">
+      <div class="envelope-flap"></div>
+      <div class="envelope-card-peek">
+        <span style="font-family: 'Alex Brush'; color: var(--gold); font-size: 24px;">Mahmoud & Yomna</span>
+        <span style="font-size: 9px; color: var(--burgundy); letter-spacing: 2px; margin-top: 3px; font-weight: bold;">WEDDING INVITATION</span>
+      </div>
+      <div class="envelope-pocket"></div>
+      <div class="seal-circle">M & Y</div>
+    </div>
+  </label>
+
+  <!-- بطاقة الدعوة الكاملة -->
+  <div class="invitation-card">
+    <div class="inner-gold-border"></div>
+
+    <div style="font-size: 26px; margin-bottom: 6px;">🌹</div>
+    <div class="bismillah">بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ</div>
+    <div class="intro-text">
+      بارَكَ اللَّهُ لَهُما وَبارَكَ عَلَيهِما وَجَمَعَ بَينَهُما في خَير<br>
+      يسرنا ويسعدنا دعوتكم لمشاركتنا فرحة العمر
+    </div>
+
+    <div class="royal-monogram">
+      <div class="monogram-ring"></div>
+      <div class="monogram-text">M & Y</div>
+      <div class="monogram-arabic-sub">محمود & يمنى</div>
+    </div>
+
+    <div class="names-block">
+      <h1 class="english-names">Mahmoud & Yomna</h1>
+      <h2 class="arabic-names">محمود & يمنى</h2>
+    </div>
+
+    <div class="divider">✦ 🌹 ✦</div>
+
+    <!-- العداد التنازلي بالأرقام الظاهرة والمؤكدة 100% -->
+    <div class="countdown-wrap">
+      <div class="countdown-title" id="cd-title">COUNTING DOWN TO THE BIG DAY</div>
+      <div class="countdown-boxes">
+        <div class="c-box">
+          <span class="c-val" id="cd-days">00</span>
+          <span class="c-lbl">أيام</span>
+        </div>
+        <div class="c-box">
+          <span class="c-val" id="cd-hours">00</span>
+          <span class="c-lbl">ساعة</span>
+        </div>
+        <div class="c-box">
+          <span class="c-val" id="cd-mins">00</span>
+          <span class="c-lbl">دقيقة</span>
+        </div>
+        <div class="c-box">
+          <span class="c-val" id="cd-secs">00</span>
+          <span class="c-lbl">ثانية</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- تفاصيل الموعد والمكان -->
+    <div class="event-cards">
+      <div class="e-card">
+        <div style="font-size: 24px; margin-bottom: 4px;">📅</div>
+        <div class="e-badge">DATE</div>
+        <div class="e-heading">4 نوفمبر</div>
+        <div class="e-desc-bold">يوم الأربعاء</div>
+        <div class="e-desc-sub">الساعة 8:00 مساءً</div>
+      </div>
+
+      <div class="e-card venue-card-highlight">
+        <div style="font-size: 24px; margin-bottom: 4px;">🏰</div>
+        <div class="e-badge" style="background: #fae4be; color: #541524;">VENUE</div>
+        <div class="e-heading" style="color: #541524;">C'est La Vie</div>
+        <div class="e-desc-bold">قاعة سي لا في</div>
+        <div class="e-desc-sub">كفر الشيخ</div>
+      </div>
+    </div>
+
+    <div class="location-btn-wrapper">
+      <a href="https://maps.app.goo.gl/G3DUAa3Y1KytjVkj7" target="_blank" rel="noopener noreferrer" class="location-btn">
+        <div class="btn-main-title">
+          <span>📍</span>
+          <span>موقع قاعة سي لا في (C'est La Vie)</span>
+        </div>
+        <div class="btn-sub-title">اضغط هنا لفتح الخريطة والاتجاهات مباشرة</div>
+      </a>
+    </div>
+
+    <div class="footer-quote">
+      "وبحضوركم تكتمل فرحتنا وسعادتنا"
+    </div>
+  </div>
+
+
+  <script>
+    (function () {
+      // 4 نوفمبر 2026 الساعة 8:00 مساءً بتوقيت القاهرة (UTC+2) = 18:00 UTC
+      var target = Date.UTC(2026, 10, 4, 18, 0, 0);
+
+      var elDays  = document.getElementById('cd-days');
+      var elHours = document.getElementById('cd-hours');
+      var elMins  = document.getElementById('cd-mins');
+      var elSecs  = document.getElementById('cd-secs');
+      var elTitle = document.getElementById('cd-title');
+
+      function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+      function update() {
+        var diff = target - Date.now();
+        if (diff <= 0) {
+          diff = 0;
+          if (elTitle) elTitle.textContent = 'THE BIG DAY IS HERE';
+        }
+        var total = Math.floor(diff / 1000);
+        elDays.textContent  = pad(Math.floor(total / 86400));
+        elHours.textContent = pad(Math.floor((total % 86400) / 3600));
+        elMins.textContent  = pad(Math.floor((total % 3600) / 60));
+        elSecs.textContent  = pad(total % 60);
+      }
+
+      update();
+      setInterval(update, 1000);
+      document.addEventListener('visibilitychange', update);
+    })();
+  </script>
+
+</body>
+</html>
